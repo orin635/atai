@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anta&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+html {
+    background-color: #EBEEEE;
+}
+
+#full-screen-block {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh;
+    background-color: #EBEEEE;
+}
+
+#log-in-card {
+    background-color: #f8f8f8;
+    padding: 10vh 8vw 10vh 8vw;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-bottom: 80px;
+}
+
+nav{
+    background-color: #F9F9F9;
+    height: 80px;
+    display: flex; /* Use flexbox layout */
+    align-items: center;
+    justify-content: center;
+    font-family: "Anta", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 35px;
+}
+
+nav img {
+    height: 40px;
+    padding-right: 5px;
+}
+
+b{
+    font-size: 40px;
+}
+
+a{
+    margin-top: 5px;
+}
+
+.horizontal-container {
+    display: flex;
+    align-items: center;
+}
+
+.inline-hr {
+    flex-grow: 1;
+    margin: 0 10px;
+    border-top: 1px solid black;
+}
+
+.inline-text {
+    margin: 0 5px;
+    font-style: italic;
+}

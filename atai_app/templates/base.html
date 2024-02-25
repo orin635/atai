@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<html lang="en">
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'assets/css/base.css' %}">
+    <script src="{% static 'assets/js/base.js' %}"></script>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'assets/images/autotradeai-favicon-color.png'%}">
+    <title>AutoTradeAI</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <main>
+        <nav id="v-nav">
+            <ul>
+                <li><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo"></li>
+                <li><b>AutoTradeAI</b></li>
+                <li><br><br></li>
+                <li class="v-nav-link"><a href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high"></i>Dashboard</a></li>
+                <li class="v-nav-link"><a href="#"><i class="fa-solid fa-sliders"></i>Trade Settings</a></li>
+                <li class="v-nav-link"><a href="#"><i class="fa-solid fa-chart-simple"></i>Live Charts</a></li>
+            </ul>
+        </nav>
+
+        <nav id="h-nav">
+            <div id = "page-content"> Base Page </div>
+            <div id = "h-nav-notification"><i class="fa-solid fa-bell"></i></div>
+            <div id="notification-dropdown">
+                <ul>
+                    <li>No New Notifications</li>
+                </ul>
+            </div>
+            <div id = "h-nav-username">{{ user.first_name }} {{ user.last_name }}</div>
+            <a href=""><img src="{% static 'assets/images/placeholder_pfp.png' %}" alt="profile picture" class="rounded-circle" id = "h-nav-pfp"></a>
+            <div id="pfp-dropdown">
+                <ul>
+                    <li><a class="h-nav-link" id = "profile-link" href="#">Profile</a></li>
+                    <li><a class="h-nav-link" id = "settings-link" href="#"><div onclick="revealSettings()">Settings</div></a></li>
+                    <li><hr></li>
+                    <li><a class="h-nav-link" href="{% url 'logout_user' %}">Sign out</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id = "settings-popup">
+            <div class="close-btn"  onclick="hideSettings()">X</div>
+            <span>Settings</span>
+            <hr>
+            <ul>
+                <li>Theme </li>
+                <hr>
+                <li>Live Chart Cryptos</li>
+            </ul>
+        </div>
+
+        <div id ="main-content-container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    {% else %}
+        <div id="full-screen-block">
+            <div id = "not-logged-in-card">
+                <p><b>ERROR: </b> You need to log in to access this page</p>
+                <a href="{% url 'login' %}">Click Here to Log In</a>
+            </div>
+        </div>
+
+    {% endif %}
+</body>
+</html>

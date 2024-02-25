@@ -1,0 +1,26 @@
+{% extends "required.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/register.css' %}">
+    <script src="{% static 'assets/js/register.js' %}"></script>
+    <nav><div id = "nav-logo" onclick="redirect()"><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo">AutoTradeAI</div></nav>
+    <div id = "full-screen-block">
+        <div id = "information-card">
+            <p>Please submit your email to be added to the wait list</p>
+            <br><br>
+            <form id="email-form" method="POST" onsubmit="submitForm()">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class = "btn btn-primary w-100 py-2" id="submit-btn" type="submit">Register</button>
+            </form>
+        </div>
+
+
+         <div id = "email-popup">
+             <div class="close-btn">X</div>
+             <div id = "email-pop-value">Email Submitted!</div>
+         </div>
+    </div>
+{% endblock %}
