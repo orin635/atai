@@ -48,8 +48,8 @@ crossorigin="anonymous"></script>
             <a href=""><img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle" id = "h-nav-pfp"></a>
             <div id="pfp-dropdown">
                 <ul>
-                    <li><a class="h-nav-link" id = "profile-link" href="#"><div onclick="revealProfile()">Profile</div></a></li>
-                    <li><a class="h-nav-link" id = "settings-link" href="#"><div onclick="revealSettings()">Settings</div></a></li>
+                    <li><div onclick="revealProfile()">Profile</div></li>
+                    <li><div onclick="revealSettings()">Settings</div></li>
                     <li><hr></li>
                     <li><a class="h-nav-link" href="{% url 'logout_user' %}">Sign out</a></li>
                 </ul>

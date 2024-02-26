@@ -32,12 +32,12 @@ html {
     border-radius: 10px;
 }
 
-#not-logged-in-card p{
+#not-logged-in-card p {
     font-size: 30px;
     font-weight: 500;
 }
 
-#not-logged-in-card a{
+#not-logged-in-card a {
     font-size: 20px;
     font-weight: 400;
 }
@@ -54,7 +54,7 @@ html {
     text-overflow: clip;
 }
 
-#v-nav ul{
+#v-nav ul {
     text-align: center;
 }
 
@@ -62,11 +62,11 @@ html {
   width: 50%;
 }
 
-#v-nav li{
+#v-nav li {
     padding-bottom: 3px;
 }
 
-#v-nav a{
+#v-nav a {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -75,7 +75,7 @@ html {
     color: #FFFFFF;
 }
 
-#v-nav-burger-container{
+#v-nav-burger-container {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -86,7 +86,7 @@ html {
     padding-top: 5px;
 }
 
-#v-nav-burger{
+#v-nav-burger {
     transition: transform 0.3s;
 }
 #v-nav-burger:hover {
@@ -107,7 +107,7 @@ html {
 .v-nav-link:hover {transform: scale(1.01);}
 
 
-#v-nav b{
+#v-nav b {
     font-family: "Anta", sans-serif;
     font-weight: 500;
     font-style: normal;
@@ -144,7 +144,7 @@ html {
     font-size: 35px;
 }
 
-#nav-logo img{
+#nav-logo img {
     height: 40px;
 }
 
@@ -178,8 +178,16 @@ html {
     transform: translate(0px, 70px);
 }
 
-#pfp-dropdown ul{
+#pfp-dropdown ul {
     text-align: left;
+}
+
+#pfp-dropdown div {
+    display: inline;
+}
+
+#pfp-dropdown div:hover {
+    cursor: pointer;
 }
 
 #pfp-dropdown a{
@@ -244,13 +252,13 @@ html {
     cursor: pointer;
 }
 
-.popup span{
+.popup span {
     font-size: 35px;
     padding-left: 20px;
     padding-right: 500px;
 }
 
-.popup ul{
+.popup ul {
     padding-left: 30px;
     padding-top: 15px;
     padding-right: 30px;

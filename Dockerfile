@@ -6,7 +6,7 @@ FROM continuumio/miniconda3
 MAINTAINER OrinMcD
 ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE=atai_project.settings
-
+ENV DOCKER_ENV=True
 
 # Ensure that everything is up-to-date
 #RUN apt-get -y update && apt-get -y upgrade
@@ -44,7 +44,7 @@ COPY . /usr/src/app
 # Make sure that static files are up to date and available
 RUN python manage.py collectstatic --no-input
 #RUN python manage.py makemigrations
-RUN python manage.py migrate
+#RUN python manage.py migrate
 
 # Expose port 8001 on the image. We'll map a localhost port to this later.
 EXPOSE 8001

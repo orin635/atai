@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 
@@ -85,16 +86,31 @@ WSGI_APPLICATION = 'atai_project.wsgi.application'
 # with open('database_password.txt') as f:
 #     database_password = f.read().strip()
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # Use the default PostgreSQL database name
-        'USER': 'orinmcd',  # PostgreSQL username as specified in your container creation command
-        'PASSWORD': "docker",  # PostgreSQL password as specified in your container creation command
-        'HOST': 'localhost',
-        'PORT': '25432',  # Use the custom port mapped to 25432 in your container creation command
+
+if os.environ.get('DOCKER_ENV') == 'True':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'orinmcd',
+            'PASSWORD': 'docker',
+            'HOST': 'atai_postgres_alias',  # Use Docker container alias
+            'PORT': '5432',
+        }
     }
-}
+else:
+    # Local development settings
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'orinmcd',
+            'PASSWORD': "docker",
+            'HOST': 'localhost',
+            'PORT': '25432',
+        }
+    }
+
 
 
 # Password validation
