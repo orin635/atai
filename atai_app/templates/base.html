@@ -25,18 +25,19 @@ crossorigin="anonymous"></script>
     {% if user.is_authenticated %}
     <main>
         <nav id="v-nav">
+            <div id = "v-nav-burger-container"><i class="fa-solid fa-bars" id = "v-nav-burger" onclick="switchNav()"></i></div>
             <ul>
-                <li><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo"></li>
-                <li><b>AutoTradeAI</b></li>
+{#                <li><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo"></li>#}
+{#                <li><b>AutoTradeAI</b></li>#}
                 <li><br><br></li>
-                <li class="v-nav-link"><a href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high"></i>Dashboard</a></li>
-                <li class="v-nav-link"><a href="#"><i class="fa-solid fa-sliders"></i>Trade Settings</a></li>
-                <li class="v-nav-link"><a href="#"><i class="fa-solid fa-chart-simple"></i>Live Charts</a></li>
+                <li class="v-nav-link"><a href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high"></i><span class="v-nav-link-span">Dashboard</span></a></li>
+                <li class="v-nav-link"><a href="{% url 'trade_settings' %}"><i class="fa-solid fa-sliders"></i><span class="v-nav-link-span">Trade Settings</span></a></li>
+                <li class="v-nav-link"><a href="{% url 'live_charts' %}"><i class="fa-solid fa-chart-simple"></i><span class="v-nav-link-span">Live Charts</span></a></li>
             </ul>
         </nav>
 
         <nav id="h-nav">
-            <div id = "page-content"> Base Page </div>
+            <div id = "nav-logo"><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo">AutoTradeAI</div>
             <div id = "h-nav-notification"><i class="fa-solid fa-bell"></i></div>
             <div id="notification-dropdown">
                 <ul>
@@ -44,10 +45,10 @@ crossorigin="anonymous"></script>
                 </ul>
             </div>
             <div id = "h-nav-username">{{ user.first_name }} {{ user.last_name }}</div>
-            <a href=""><img src="{% static 'assets/images/placeholder_pfp.png' %}" alt="profile picture" class="rounded-circle" id = "h-nav-pfp"></a>
+            <a href=""><img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle" id = "h-nav-pfp"></a>
             <div id="pfp-dropdown">
                 <ul>
-                    <li><a class="h-nav-link" id = "profile-link" href="#">Profile</a></li>
+                    <li><a class="h-nav-link" id = "profile-link" href="#"><div onclick="revealProfile()">Profile</div></a></li>
                     <li><a class="h-nav-link" id = "settings-link" href="#"><div onclick="revealSettings()">Settings</div></a></li>
                     <li><hr></li>
                     <li><a class="h-nav-link" href="{% url 'logout_user' %}">Sign out</a></li>
@@ -55,7 +56,7 @@ crossorigin="anonymous"></script>
             </div>
         </nav>
 
-        <div id = "settings-popup">
+        <div id = "settings-popup" class="popup">
             <div class="close-btn"  onclick="hideSettings()">X</div>
             <span>Settings</span>
             <hr>
@@ -63,6 +64,20 @@ crossorigin="anonymous"></script>
                 <li>Theme </li>
                 <hr>
                 <li>Live Chart Cryptos</li>
+            </ul>
+        </div>
+
+        <div id = "profile-popup" class="popup">
+            <div class="close-btn" onclick="hideProfile()">X</div>
+            <span>Profile</span>
+            <hr>
+            <ul>
+                <li>First Name : {{ user.first_name }}</li>
+                <li>Last Name : {{ user.last_name }}</li>
+                <li>UserName : {{ user.username }}</li>
+                <li>Email : {{ user.email }}</li>
+                <li>Age : {{ profile.age }}</li>
+                <li>Profile Picture : <img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle" id = "h-nav-pfp"></li>
             </ul>
         </div>
 

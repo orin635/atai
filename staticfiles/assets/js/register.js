@@ -4,17 +4,11 @@ function redirect() {
     window.location.href = newUrl;
 }
 
-$(document).ready(function () {
-    // Check if the email popup value exists and is not empty
-    const emailPopupValue = '{{ messages }}';
-    if (emailPopupValue) {
-        // Show the email popup
-        $('#email-pop-value').text(emailPopupValue);
-        $('#email-popup').show();
-    }
+function submitForm() {
+    alert("Email Submitted!");
+}
 
-    // Close button functionality
-    $('.close-btn').click(function () {
-        $('#email-popup').hide();
-    });
+// Close the popup when the close button is clicked
+document.querySelector('.close-btn').addEventListener('click', function() {
+    document.getElementById('email-popup').style.display = 'none';
 });

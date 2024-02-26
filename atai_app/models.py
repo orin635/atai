@@ -12,6 +12,7 @@ class Profile(models.Model):
     )
     age = models.IntegerField(blank=True, null=True)
     dark_mode = models.BooleanField(default=False)
+    profile_picture = models.ImageField(upload_to='media/profile_pictures/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username} Profile"

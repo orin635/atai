@@ -42,8 +42,44 @@ function hideDropdown(dropdown){
 
 function revealSettings(){
     document.getElementById("settings-popup").style.display = "block";
+    hideProfile()
 }
 
 function hideSettings(){
     document.getElementById("settings-popup").style.display = "none";
+}
+
+function revealProfile(){
+    document.getElementById("profile-popup").style.display = "block";
+    hideSettings()
+}
+
+function hideProfile(){
+    document.getElementById("profile-popup").style.display = "none";
+}
+
+let rotated = false;
+function switchNav() {
+    const vNavBurger = document.getElementById('v-nav-burger');
+    const vNavLinks = document.getElementsByClassName('v-nav-link-span')
+    const vNavBar = document.getElementById('v-nav')
+
+    console.log(vNavLinks)
+    // Toggle the rotation
+    rotated = !rotated;
+
+    // Rotate the element based on the current state
+    if (rotated) { //aka collapsed
+        vNavBurger.style.transform = 'rotate(90deg)';
+        vNavBar.style.width = '80px'
+        for (let i = 0; i < vNavLinks.length; i++) {
+            vNavLinks[i].style.display = 'none';
+        }
+    } else { //Aka NOT collapsed
+        vNavBurger.style.transform = 'rotate(0deg)';
+        vNavBar.style.width = '275px'
+        for (let i = 0; i < vNavLinks.length; i++) {
+            vNavLinks[i].style.display = '';
+        }
+    }
 }

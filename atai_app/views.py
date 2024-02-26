@@ -25,3 +25,15 @@ def register(request):
 def dashboard(request):
     print("Received email: {email}", flush=True)
     return render(request, 'dashboard.html')
+
+
+def trade_settings(request):
+    print("Received email: {email}", flush=True)
+    return render(request, 'tradesettings.html')
+
+
+def live_charts(request):
+    print("Received email: {email}", flush=True)
+    return render(request, 'livecharts.html')
+
+

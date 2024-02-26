@@ -48,6 +48,10 @@ html {
     float: left;
     height: 100vh;
     width: 275px;
+    transition: width 0.5s ease;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide any overflowing text */
+    text-overflow: clip;
 }
 
 #v-nav ul{
@@ -71,12 +75,35 @@ html {
     color: #FFFFFF;
 }
 
+#v-nav-burger-container{
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-right: auto;
+    font-size: 40px;
+    color: #FFFFFF;
+    padding-left: 20px;
+    padding-top: 5px;
+}
+
+#v-nav-burger{
+    transition: transform 0.3s;
+}
+
+#v-nav-burger:hover {
+    cursor: pointer;
+}
+
 .v-nav-link{
     transition: transform 0.3s ease;
     text-align: left;
     padding-left: 25px;
-    padding-top: 8px
+    padding-top: 8px;
 }
+.v-nav-link span{
+    color: white;
+}
+
 .v-nav-link:hover {transform: scale(1.01);}
 
 
@@ -87,6 +114,7 @@ html {
     font-size: 35px;
     color: #FFFFFF;
 }
+
 
 #v-nav a i {
     margin-right: 15px;
@@ -101,11 +129,19 @@ html {
     font-size: 17px;
 }
 
-#page-content {
+#nav-logo {
+    display: flex; /* Use flexbox layout */
+    align-items: center;
+    justify-content: center;
     padding-left: 35px;
-    margin-right: auto;
-    font-weight: 600;
-    font-size: 42px;
+    margin: 0 auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 35px;
+}
+
+#nav-logo img{
+    height: 40px;
 }
 
 #h-nav-username {
@@ -173,6 +209,7 @@ html {
 }
 
 #settings-popup {
+    display: none;
     border-radius: 10px;
     border: 1.5px solid #ccc;
     padding-top: 20px;
