@@ -64,7 +64,12 @@ crossorigin="anonymous"></script>
                 <li>Theme </li>
                 <hr>
                 <li>Live Chart Cryptos</li>
-                <li><a href="/coinbase/login/">Connect to Coinbase</a></li>
+                <hr>
+                {% if profile.coinbase_connected %}
+                    <li>Coinbase is Connected</li>
+                {% else %}
+                    <li><a href="{% url 'coinbase_login' %}">Connect to Coinbase</a></li>
+                {% endif %}
             </ul>
         </div>
 
