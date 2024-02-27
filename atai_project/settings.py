@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'atai_app.apps.AtaiAppConfig',
+    'oauth2_provider',
+    'django_cryptography',
 ]
 
 MIDDLEWARE = [
@@ -177,3 +179,18 @@ LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "dashboard"
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+COINBASE_CLIENT_ID = os.getenv('CLIENT_ID')
+COINBASE_CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+COINBASE_REDIRECT_URI = 'http://localhost:8000/coinbase/callback/'
+
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'coinbase': 'read:user',
+    },
+    'CLIENT_ID': COINBASE_CLIENT_ID,
+    'CLIENT_SECRET': COINBASE_CLIENT_SECRET,
+    'ACCESS_TOKEN_URL': 'https://api.coinbase.com/oauth/token',
+    'AUTHORIZATION_URL': 'https://www.coinbase.com/oauth/authorize',
+    'USER_INFO_URL': 'https://api.coinbase.com/v2/user',
+}

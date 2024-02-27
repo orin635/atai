@@ -1,0 +1,14 @@
+{% extends "required.html" %}
+{% block title %}error{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/register.css' %}">
+    <script src="{% static 'assets/js/register.js' %}"></script>
+    <nav><div id = "nav-logo" onclick="redirect()"><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo">AutoTradeAI</div></nav>
+    <div id = "full-screen-block">
+        <div id = "information-card">
+            Sorry there was an Error with what you where trying to do, please try again
+        </div>
+    </div>
+{% endblock %}
