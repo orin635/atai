@@ -27,9 +27,12 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ.get('DOCKER_ENV') == 'True':
+    DEBUG = False
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['autotradeai.ie', 'www.autotradeai.ie', '3.255.62.190', 'localhost']
 
 
 # Application definition
@@ -168,8 +171,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -182,7 +183,11 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 COINBASE_CLIENT_ID = os.getenv('CLIENT_ID')
 COINBASE_CLIENT_SECRET = os.getenv('CLIENT_SECRET')
-COINBASE_REDIRECT_URI = 'http://localhost:8000/coinbase/callback/'
+
+if os.environ.get('DOCKER_ENV') == 'True':
+    COINBASE_REDIRECT_URI = 'https://autotradeai.ie/coinbase/callback/'
+else:
+    COINBASE_REDIRECT_URI = 'http://localhost:8000/coinbase/callback/'
 
 OAUTH2_PROVIDER = {
     'SCOPES': {

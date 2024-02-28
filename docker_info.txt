@@ -1,7 +1,7 @@
 docker network create atai_network
 
 #######################################docker create --name atai_postgis --network atai_network --network-alias atai_postgis_alias -t -p 25432:5432 -e POSTGRES_USER=orinmcd -e POSTGRES_PASS=docker -v atai_volume:/var/lib/postgresql kartoza/postgis
-docker create --name atai_postgres --network atai_network --network-alias atai_postgres_alias -t -p 25432:5432 -e POSTGRES_USER=orinmcd -e POSTGRES_PASSWORD=docker -v atai_volume:/var/lib/postgresql/data postgres
+docker create --name atai_postgres --network atai_network --network-alias atai_postgres_alias -t -p 25432:5432 -e POSTGRES_USER=orinmcd -e POSTGRES_PASSWORD=docker -v atai_volume:/var/lib/atai_postgresql/data postgres
 
 
 docker create --name atai_pgadmin --network atai_network --network-alias atai_pgadmin_alias -t -v atai_volume:/var/lib/pgadmin -p 8082:80 -e PGADMIN_DEFAULT_EMAIL=C20307673@mytudublin.ie -e PGADMIN_DEFAULT_PASSWORD=atai dpage/pgadmin4
@@ -16,3 +16,12 @@ docker create --name atai_django --network atai_network --network-alias atai_dja
 
 
 docker create --name atai_nginx_certbot --network atai_network --network-alias atai_nginx_certbot -p 80:80 -p 443:443 -t -v wmap_web_data:/usr/share/nginx/html -v $HOME/atai_nginx_certbot/conf:/etc/nginx/conf.d -v /etc/letsencrypt:/etc/letsencrypt -v /var/www/certbot -v atai_volume:/usr/share/nginx/html/static wmap_nginx_certbot
+
+
+
+
+
+
+#####SHARED MEDIA
+docker create --name atai_django_sm --network atai_network --network-alias atai_django_alias -t -p 8001:8001 -v atai_media_volume:/path/to/media/in/django atai_project
+docker create --name atai_nginx_certbot_sm --network atai_network --network-alias atai_nginx_certbot -p 80:80 -p 443:443 -t -v wmap_web_data:/usr/share/nginx/html -v $HOME/atai_nginx_certbot/conf:/etc/nginx/conf.d -v /etc/letsencrypt:/etc/letsencrypt -v /var/www/certbot -v atai_volume:/usr/share/nginx/html/static -v atai_media_volume:/usr/share/nginx/html/media wmap_nginx_certbot

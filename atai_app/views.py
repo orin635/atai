@@ -28,86 +28,89 @@ def register(request):
 
 
 def dashboard(request):
-    cache_key_account = f'{request.user.id}_coinbase_account'
-    cache_key_balance = f'{request.user.id}_eth_balance'
-
-    # Attempt to get cached data
-    account_name = cache.get(cache_key_account)
-    eth_balance = cache.get(cache_key_balance)
-
-    if account_name is not None and eth_balance is not None:
-        return render(request, 'dashboard.html', {
-            'account_name': account_name,
-            'eth_balance': eth_balance
-        })
+    if not request.user.is_authenticated:#If user is not logged in, redirect to login
+        return redirect('/accounts/login')
     else:
-        try:
-            # Retrieve the CoinbaseAccount for the current user
-            coinbase_account = CoinbaseAccount.objects.get(user=request.user)
-        except CoinbaseAccount.DoesNotExist:
+        cache_key_account = f'{request.user.id}_coinbase_account'
+        cache_key_balance = f'{request.user.id}_eth_balance'
+
+        # Attempt to get cached data
+        account_name = cache.get(cache_key_account)
+        eth_balance = cache.get(cache_key_balance)
+
+        if account_name is not None and eth_balance is not None:
             return render(request, 'dashboard.html', {
-                'account_name': "NA",
-                'eth_balance': "NA"
+                'account_name': account_name,
+                'eth_balance': eth_balance
             })
-
-        if timezone.now() >= coinbase_account.expires_in:
-            # Token has expired, use the refresh token to get a new access token
-            refresh_url = 'https://api.coinbase.com/oauth/token'
-            refresh_data = {
-                'grant_type': 'refresh_token',
-                'refresh_token': coinbase_account.refresh_token,
-                'client_id': settings.COINBASE_CLIENT_ID,
-                'client_secret': settings.COINBASE_CLIENT_SECRET,
-            }
-            response = requests.post(refresh_url, data=refresh_data)
-            if response.status_code == 200:
-                token_info = response.json()
-                expires_in = timezone.now() + timezone.timedelta(seconds=token_info['expires_in'])
-                # Update the CoinbaseAccount with the new access and refresh tokens
-                CoinbaseAccount.objects.filter(user=request.user).update(
-                    access_token=token_info['access_token'],
-                    refresh_token=token_info['refresh_token'],
-                    # Refresh token might not change, but it's good practice to update it anyway
-                    expires_in=expires_in
-                )
-                # Update the access token for the current request
-                access_token = token_info['access_token']
-            else:
-                # Handle the error (e.g., invalid refresh token)
-                return redirect('/error/')
-
         else:
-            access_token = coinbase_account.access_token
+            try:
+                # Retrieve the CoinbaseAccount for the current user
+                coinbase_account = CoinbaseAccount.objects.get(user=request.user)
+            except CoinbaseAccount.DoesNotExist:
+                return render(request, 'dashboard.html', {
+                    'account_name': "NA",
+                    'eth_balance': "NA"
+                })
 
-        if access_token:
-            # Fetch user profile information as before
-            user_info_url = "https://api.coinbase.com/v2/user"  # Change this line if you have a specific URL in settings
-            response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}',
-                                                            'CB-VERSION': 'YYYY-MM-DD'})  # Set the API version date
-            if response.status_code == 200:
-                user_data = response.json()
-                account_name = user_data['data']['name']
-
-                # Fetch account balance information
-                accounts_url = "https://api.coinbase.com/v2/accounts/ETH"  # Use the correct endpoint for account information
-                response = requests.get(accounts_url, headers={'Authorization': f'Bearer {access_token}',
-                                                               'CB-VERSION': 'YYYY-MM-DD'})  # Ensure to add the API version header
+            if timezone.now() >= coinbase_account.expires_in:
+                # Token has expired, use the refresh token to get a new access token
+                refresh_url = 'https://api.coinbase.com/oauth/token'
+                refresh_data = {
+                    'grant_type': 'refresh_token',
+                    'refresh_token': coinbase_account.refresh_token,
+                    'client_id': settings.COINBASE_CLIENT_ID,
+                    'client_secret': settings.COINBASE_CLIENT_SECRET,
+                }
+                response = requests.post(refresh_url, data=refresh_data)
                 if response.status_code == 200:
-                    accounts_data = response.json()
+                    token_info = response.json()
+                    expires_in = timezone.now() + timezone.timedelta(seconds=token_info['expires_in'])
+                    # Update the CoinbaseAccount with the new access and refresh tokens
+                    CoinbaseAccount.objects.filter(user=request.user).update(
+                        access_token=token_info['access_token'],
+                        refresh_token=token_info['refresh_token'],
+                        # Refresh token might not change, but it's good practice to update it anyway
+                        expires_in=expires_in
+                    )
+                    # Update the access token for the current request
+                    access_token = token_info['access_token']
+                else:
+                    # Handle the error (e.g., invalid refresh token)
+                    return redirect('/error/')
 
-                    if accounts_data['data']:  # Check if there are accounts
-                        eth_balance = accounts_data['data']['balance']['amount']
-                    else:
-                        eth_balance = 'Unavailable'
+            else:
+                access_token = coinbase_account.access_token
 
-                    cache.set(cache_key_account, account_name, 1800)
-                    cache.set(cache_key_balance, eth_balance, 1800)
-                    return render(request, 'dashboard.html', {
-                        'account_name': account_name,
-                        'eth_balance': eth_balance  # Adjust according to how you handle the balance data
-                    })
+            if access_token:
+                # Fetch user profile information as before
+                user_info_url = "https://api.coinbase.com/v2/user"  # Change this line if you have a specific URL in settings
+                response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}',
+                                                                'CB-VERSION': 'YYYY-MM-DD'})  # Set the API version date
+                if response.status_code == 200:
+                    user_data = response.json()
+                    account_name = user_data['data']['name']
 
-        return redirect('/error_redirect')
+                    # Fetch account balance information
+                    accounts_url = "https://api.coinbase.com/v2/accounts/ETH"  # Use the correct endpoint for account information
+                    response = requests.get(accounts_url, headers={'Authorization': f'Bearer {access_token}',
+                                                                   'CB-VERSION': 'YYYY-MM-DD'})  # Ensure to add the API version header
+                    if response.status_code == 200:
+                        accounts_data = response.json()
+
+                        if accounts_data['data']:  # Check if there are accounts
+                            eth_balance = accounts_data['data']['balance']['amount']
+                        else:
+                            eth_balance = 'Unavailable'
+
+                        cache.set(cache_key_account, account_name, 1800)
+                        cache.set(cache_key_balance, eth_balance, 1800)
+                        return render(request, 'dashboard.html', {
+                            'account_name': account_name,
+                            'eth_balance': eth_balance  # Adjust according to how you handle the balance data
+                        })
+
+            return redirect('/error_redirect')
 
 
 def trade_settings(request):
