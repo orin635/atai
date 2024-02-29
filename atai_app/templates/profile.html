@@ -25,7 +25,14 @@
             <li>UserName : {{ user.username }}</li>
             <li>Email : {{ user.email }}</li>
             <li>Age : {{ profile.age }}</li>
-            <li>Profile Picture : <img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp"></li>
+            {% if profile.profile_picture %}
+                <li>Profile Picture : <img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp"></li>
+            {% else %}
+                <li>Profile Picture : <img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="profile picture" class="rounded-circle h-nav-pfp"></li>
+            {% endif %}
         </ul>
+        <br><br><br>
+        <hr>
+        <span><a class="h-nav-link" href="{% url 'logout_user' %}">Sign out</a></span>
     </div>
 {% endblock %}

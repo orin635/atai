@@ -23,5 +23,5 @@ docker create --name atai_nginx_certbot --network atai_network --network-alias a
 
 
 #####SHARED MEDIA
-docker create --name atai_django_sm --network atai_network --network-alias atai_django_alias -t -p 8001:8001 -v atai_media_volume:/path/to/media/in/django atai_project
+docker create --name atai_django_sm --network atai_network --network-alias atai_django_alias -t -p 8001:8001 -v atai_media_volume:/usr/src/app/media orinmcd/atai_project:latest
 docker create --name atai_nginx_certbot_sm --network atai_network --network-alias atai_nginx_certbot -p 80:80 -p 443:443 -t -v wmap_web_data:/usr/share/nginx/html -v $HOME/atai_nginx_certbot/conf:/etc/nginx/conf.d -v /etc/letsencrypt:/etc/letsencrypt -v /var/www/certbot -v atai_volume:/usr/share/nginx/html/static -v atai_media_volume:/usr/share/nginx/html/media wmap_nginx_certbot

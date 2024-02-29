@@ -50,7 +50,13 @@ crossorigin="anonymous"></script>
                 </ul>
             </div>
             <div id = "h-nav-username">{{ user.first_name }} {{ user.last_name }}</div>
-            <a href=""><img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp" id = "h-nav-pfp"></a>
+
+            {% if profile.profile_picture %}
+                <a href=""><img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp" id = "h-nav-pfp"></a>
+            {% else %}
+                <a href=""><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="profile picture" class="rounded-circle h-nav-pfp" id = "h-nav-pfp"></a>
+            {% endif %}
+
             <div id="pfp-dropdown">
                 <ul>
                     <li><div onclick="revealProfile()">Profile</div></li>
@@ -69,12 +75,6 @@ crossorigin="anonymous"></script>
                 <li>Theme </li>
                 <hr>
                 <li>Live Chart Cryptos</li>
-                <hr>
-                {% if profile.coinbase_connected %}
-                    <li>Coinbase is Connected</li>
-                {% else %}
-                    <li><a href="{% url 'coinbase_login' %}">Connect to Coinbase</a></li>
-                {% endif %}
             </ul>
         </div>
 
@@ -88,7 +88,16 @@ crossorigin="anonymous"></script>
                 <li>UserName : {{ user.username }}</li>
                 <li>Email : {{ user.email }}</li>
                 <li>Age : {{ profile.age }}</li>
-                <li>Profile Picture : <img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp"></li>
+                {% if profile.profile_picture %}
+                    <li>Profile Picture : <img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp"></li>
+                {% else %}
+                    <li>Profile Picture : <img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="profile picture" class="rounded-circle h-nav-pfp"></li>
+                {% endif %}
+                {% if profile.coinbase_connected %}
+                    <li>Coinbase is Connected</li>
+                {% else %}
+                    <li><a href="{% url 'coinbase_login' %}">Connect to Coinbase</a></li>
+                {% endif %}
             </ul>
         </div>
 
