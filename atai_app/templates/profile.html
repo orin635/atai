@@ -7,7 +7,7 @@
         <span>Settings</span>
         <hr>
         <ul>
-            <li>Theme </li>
+            <li>Dark Mode <label for="dark_mode"></label><input type="checkbox" id="dark_mode" name="dark_mode" class="btn-check" {% if profile.dark_mode %}checked{% endif %} onchange="updateDarkMode({{ profile.user.id }});"></li>
             <li>Live Chart Cryptos</li>
             {% if profile.coinbase_connected %}
                 <li>Coinbase is Connected</li>
