@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="{% static 'assets/css/profile.css' %}">
         <script src="{% static 'assets/js/profile.js' %}"></script>
         <span>Settings</span>
-        <hr>
+
         <ul>
             <li>Dark Mode <label for="dark_mode"></label><input type="checkbox" id="dark_mode_mobile" name="dark_mode" class="btn-check" {% if profile.dark_mode %}checked{% endif %} onchange="updateDarkModeMobile({{ profile.user.id }});"></li>
             <li>Live Chart Cryptos</li>
@@ -19,7 +19,6 @@
 
         <br><br><br>
         <span>Profile</span>
-        <hr>
         <ul>
             <li>First Name : {{ user.first_name }}</li>
             <li>Last Name : {{ user.last_name }}</li>
@@ -33,7 +32,6 @@
             {% endif %}
         </ul>
         <br><br><br>
-        <hr>
         <span><a class="h-nav-link" id = "sign-out-button" href="{% url 'logout_user' %}">Sign out</a></span>
     </div>
 {% endblock %}

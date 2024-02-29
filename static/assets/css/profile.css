@@ -1,10 +1,15 @@
 span {
     font-weight: 600;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 ul {
     padding-left: 15px;
+}
+
+li {
+    display: flex; /* Enables flexbox */
+    align-items: center;
 }
 #bottom-container {
     display: flex; /* Use flexbox layout */
@@ -39,12 +44,20 @@ ul {
     transform: scale(1.05); /* Slightly increase the button size */
 }
 
+#dark_mode_mobile{
+    margin-left: 20px;
+    width: 25px;
+    height: 25px;
+}
+
+
 #profile-container{
     display: flex;
     flex-direction: column;
     height: calc(100vh - 130px);
     justify-content: flex-start;
     padding: 10px;
+    font-size: 20px;
 }
 
 @media screen and (min-width: 868px) {
@@ -53,7 +66,7 @@ ul {
     }
 }
 
-@media screen and (max-height: 680px) {
+@media screen and (max-height: 725px) {
     #sign-out-button {
         position: relative;
     }
