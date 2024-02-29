@@ -86,3 +86,39 @@ function switchNav() {
         }
     }
 }
+
+function updateDarkMode(userId) {
+    const csrftoken = getCookie('csrftoken');
+    const isChecked = $('#dark_mode').is(':checked');
+
+    $.ajax({
+        url: '/update-dark-mode/',
+        type: 'POST',
+        data: {
+            'user_id': userId,
+            'dark_mode': isChecked
+        },
+        headers: {'X-CSRFToken': csrftoken},
+        success: function(response) {
+            window.location.reload();
+        },
+        error: function(error) {
+            console.error('Error updating dark mode.');
+        }
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import logout
 from .forms import EmailForm
@@ -7,6 +8,8 @@ from django.utils import timezone
 from django.core.cache import cache
 import datetime
 import requests
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 
 def logout_user(request):
@@ -192,3 +195,13 @@ def coinbase_callback(request):
     else:
         # No code was provided
         return redirect('/error_redirect')
+
+
+def update_dark_mode(request):
+    user_id = request.POST.get('user_id')
+    dark_mode = request.POST.get('dark_mode') == 'true'  # Convert string to boolean
+    profile = Profile.objects.get(user__id=user_id)
+    profile.dark_mode = dark_mode
+    profile.save()
+    return JsonResponse({'success': True})
+

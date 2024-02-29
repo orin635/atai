@@ -1,0 +1,50 @@
+#v-nav {
+    background-color: #4e73df;
+}
+
+#v-nav a, #v-nav-burger-container, .v-nav-link span, #v-nav b {
+    color: #FFFFFF;
+}
+
+#h-nav {
+    background-color: #F9F9F9;
+}
+
+#h-nav-notification {
+    color: #1b1b1b;
+}
+
+#pfp-dropdown, #notification-dropdown, .popup {
+    background-color: #eeeeee;
+}
+
+#main-content-container {
+    background-color: #EBEEEE;
+}
+
+#not-logged-in-card {
+    background-color: #f8f8f8;
+}
+
+#pfp-dropdown a{
+    color: #1b1b1b;
+}
+
+.close-btn {
+    background-color: #4e73df;
+    color: #FFFFFF;
+}
+
+@media screen and (max-width: 868px) {
+        #mobile-nav {
+        background-color: #4e73df;
+    }
+
+    #mobile-nav i{
+        color: #FFFFFF;
+    }
+
+    .mobile-nav-button-container span {
+        color: #FFFFFF;
+    }
+}

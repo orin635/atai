@@ -11,10 +11,16 @@ crossorigin="anonymous"></script>
 integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
 crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <html lang="en">
 {% load static %}
 <head>
+    {% if profile.dark_mode %}
+        <link rel="stylesheet" href="{% static 'assets/css/darkmode_colors.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'assets/css/lightmode_colors.css' %}">
+    {% endif %}
     <link rel="stylesheet" href="{% static 'assets/css/base.css' %}">
     <script src="{% static 'assets/js/base.js' %}"></script>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
@@ -42,7 +48,11 @@ crossorigin="anonymous"></script>
         </nav>
 
         <nav id="h-nav">
-            <div id = "nav-logo"><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo">AutoTradeAI</div>
+            {% if profile.dark_mode %}
+                <div id = "nav-logo"><img src="{% static 'assets/images/autotradeai-favicon-white.png' %}" alt="AutoTradeAI Logo">AutoTradeAI</div>
+            {% else %}
+                <div id = "nav-logo"><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo">AutoTradeAI</div>
+            {% endif %}
             <div id = "h-nav-notification"><i class="fa-solid fa-bell"></i></div>
             <div id="notification-dropdown">
                 <ul>
@@ -72,7 +82,7 @@ crossorigin="anonymous"></script>
             <span>Settings</span>
             <hr>
             <ul>
-                <li>Theme </li>
+                <li>Dark Mode <label for="dark_mode"></label><input type="checkbox" id="dark_mode" name="dark_mode" class="btn-check" {% if profile.dark_mode %}checked{% endif %} onchange="updateDarkMode({{ profile.user.id }});"></li>
                 <hr>
                 <li>Live Chart Cryptos</li>
             </ul>

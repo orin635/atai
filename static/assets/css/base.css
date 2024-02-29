@@ -14,20 +14,15 @@ ul {
     margin: 0;
 }
 
-html {
-    background-color: #EBEEEE;
-}
 
 #full-screen-block {
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     height: 100vh;
-    background-color: #EBEEEE;
 }
 
 #not-logged-in-card {
-    background-color: #f8f8f8;
     padding: 10vh 8vw 10vh 8vw;
     border-radius: 10px;
 }
@@ -44,7 +39,6 @@ html {
 
 
 #v-nav {
-    background-color: #4e73df;
     float: left;
     height: 100vh;
     width: 275px;
@@ -74,7 +68,6 @@ html {
     font-style: normal;
     font-size: 25px;
     padding-right: 15px;
-    color: #FFFFFF;
 }
 
 #v-nav-burger-container {
@@ -83,7 +76,6 @@ html {
     font-style: normal;
     margin-right: auto;
     font-size: 40px;
-    color: #FFFFFF;
     padding-left: 20px;
     padding-top: 5px;
 }
@@ -102,9 +94,6 @@ html {
     padding-left: 25px;
     padding-top: 8px;
 }
-.v-nav-link span{
-    color: white;
-}
 
 .v-nav-link:hover {transform: scale(1.01);}
 
@@ -114,7 +103,6 @@ html {
     font-weight: 500;
     font-style: normal;
     font-size: 35px;
-    color: #FFFFFF;
 }
 
 
@@ -123,7 +111,6 @@ html {
 }
 
 #h-nav {
-    background-color: #F9F9F9;
     height: 80px;
     display: flex; /* Use flexbox layout */
     align-items: center;
@@ -167,7 +154,6 @@ html {
 #h-nav-notification {
     padding-right: 50px;
     font-size: 20px;
-    color: #1b1b1b;
     cursor: pointer;
 }
 
@@ -177,7 +163,6 @@ html {
     border: 1px solid #ccc; /* Optional: Add a border */
     padding: 20px 40px 20px 20px;
     box-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
-    background-color: #eeeeee;
 
     position: absolute;
     inset: 0 35px auto auto;
@@ -196,16 +181,12 @@ html {
     cursor: pointer;
 }
 
-#pfp-dropdown a{
-    color: #1b1b1b;
-}
 
 .h-nav-link{transition: transform 0.3s ease;}
 .h-nav-link:hover {transform: scale(1.05);}
 
 
 #main-content-container {
-    background-color: #EBEEEE;
     padding-top: 80px;
     padding-left: 275px;
     transition: padding-left 0.5s ease;
@@ -218,8 +199,6 @@ html {
     border: 1px solid #ccc;
     padding: 20px 40px 20px 20px;
     box-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
-    background-color: #eeeeee;
-
     position: absolute;
     inset: 0 230px auto auto;
     transform: translate(0px, 60px);
@@ -236,7 +215,6 @@ html {
     padding-top: 20px;
     padding-bottom: 20px;
     box-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
-    background-color: #eeeeee;
     position: absolute;
     top: 30%;
     left: 50%;
@@ -253,8 +231,6 @@ html {
     right: -10px;
     width: 30px;
     height: 30px;
-    background-color: #4e73df;
-    color: white;
     border-radius: 50%;
     text-align: center;
     line-height: 30px;
@@ -273,8 +249,19 @@ html {
     padding-right: 30px;
  }
 
+.popup li {
+    display: flex; /* Enables flexbox */
+    align-items: center;
+}
+
 #mobile-nav {
     display: none;
+}
+
+#dark_mode {
+    margin-left: 20px;
+    width: 15px;
+    height: 15px;
 }
 
 
@@ -320,7 +307,6 @@ html {
         font-size: 17px;
         left: 0;
         width: 100%;
-        background-color: #4e73df;
         z-index: 1000;
         overflow-x: auto;
         overflow-y: hidden;
@@ -328,7 +314,6 @@ html {
 
     #mobile-nav i{
         font-size: 25px;
-        color: #FFFFFF;
     }
 
     .mobile-nav-button-container {
@@ -343,7 +328,6 @@ html {
 
     .mobile-nav-button-container span {
         font-size: 12px;
-        color: #FFFFFF;
         display: block;
         margin: auto;
         text-align: center;

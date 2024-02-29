@@ -1,0 +1,54 @@
+#v-nav {
+    background-color: #1c3b94;
+}
+
+html {
+    background-color: #191b1c;
+}
+
+#v-nav a, #v-nav-burger-container, .v-nav-link span, #v-nav b, #main-content-container, #h-nav, #h-nav-notification i{
+    color: #FFFFFF;
+}
+
+#h-nav {
+    background-color: #1C1E20;
+}
+
+#h-nav-notification {
+    color: #1b1b1b;
+}
+
+#pfp-dropdown, #notification-dropdown, .popup {
+    background-color: #eeeeee;
+}
+
+#main-content-container {
+    background-color: #191b1c;
+}
+
+#not-logged-in-card {
+    background-color: #f8f8f8;
+}
+
+#pfp-dropdown, #notification-dropdown {
+    color: #1b1b1b;
+}
+
+.close-btn {
+    background-color: #4e73df;
+    color: #FFFFFF;
+}
+
+@media screen and (max-width: 868px) {
+        #mobile-nav {
+        background-color: #1c3b94;
+    }
+
+    #mobile-nav i{
+        color: #FFFFFF;
+    }
+
+    .mobile-nav-button-container span {
+        color: #FFFFFF;
+    }
+}
