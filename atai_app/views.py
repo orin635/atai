@@ -121,6 +121,10 @@ def live_charts(request):
     return render(request, 'livecharts.html')
 
 
+def profile(request):
+    return render(request, 'profile.html')
+
+
 def error_redirect(request):
     return render(request, 'error.html')
 

@@ -27,13 +27,18 @@ crossorigin="anonymous"></script>
         <nav id="v-nav">
             <div id = "v-nav-burger-container"><i class="fa-solid fa-bars" id = "v-nav-burger" onclick="switchNav()"></i></div>
             <ul>
-{#                <li><img src="{% static 'assets/images/autotradeai-favicon-black.png' %}" alt="AutoTradeAI Logo"></li>#}
-{#                <li><b>AutoTradeAI</b></li>#}
                 <li><br><br></li>
                 <li class="v-nav-link"><a href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high"></i><span class="v-nav-link-span">Dashboard</span></a></li>
                 <li class="v-nav-link"><a href="{% url 'trade_settings' %}"><i class="fa-solid fa-sliders"></i><span class="v-nav-link-span">Trade Settings</span></a></li>
                 <li class="v-nav-link"><a href="{% url 'live_charts' %}"><i class="fa-solid fa-chart-simple"></i><span class="v-nav-link-span">Live Charts</span></a></li>
             </ul>
+        </nav>
+
+        <nav id = "mobile-nav">
+            <a class="mobile-nav-button-container" href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a>
+            <a class="mobile-nav-button-container" href="{% url 'trade_settings' %}"><i class="fa-solid fa-sliders"></i><span>Trade Settings</span></a>
+            <a class="mobile-nav-button-container" href="{% url 'live_charts' %}"><i class="fa-solid fa-chart-simple"></i><span>Live Charts</span></a>
+            <a class="mobile-nav-button-container" href="{% url 'profile' %}"><i class="fa-solid fa-user"></i><span>Profile</span></a>
         </nav>
 
         <nav id="h-nav">
@@ -45,7 +50,7 @@ crossorigin="anonymous"></script>
                 </ul>
             </div>
             <div id = "h-nav-username">{{ user.first_name }} {{ user.last_name }}</div>
-            <a href=""><img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle" id = "h-nav-pfp"></a>
+            <a href=""><img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp" id = "h-nav-pfp"></a>
             <div id="pfp-dropdown">
                 <ul>
                     <li><div onclick="revealProfile()">Profile</div></li>
@@ -83,7 +88,7 @@ crossorigin="anonymous"></script>
                 <li>UserName : {{ user.username }}</li>
                 <li>Email : {{ user.email }}</li>
                 <li>Age : {{ profile.age }}</li>
-                <li>Profile Picture : <img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle" id = "h-nav-pfp"></li>
+                <li>Profile Picture : <img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp"></li>
             </ul>
         </div>
 

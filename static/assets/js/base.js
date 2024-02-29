@@ -63,6 +63,7 @@ function switchNav() {
     const vNavBurger = document.getElementById('v-nav-burger');
     const vNavLinks = document.getElementsByClassName('v-nav-link-span')
     const vNavBar = document.getElementById('v-nav')
+    const mainContent = document.getElementById('main-content-container')
 
     console.log(vNavLinks)
     // Toggle the rotation
@@ -72,12 +73,14 @@ function switchNav() {
     if (rotated) { //aka collapsed
         vNavBurger.style.transform = 'rotate(90deg)';
         vNavBar.style.width = '80px'
+        mainContent.style.paddingLeft = '80px'
         for (let i = 0; i < vNavLinks.length; i++) {
             vNavLinks[i].style.display = 'none';
         }
     } else { //Aka NOT collapsed
         vNavBurger.style.transform = 'rotate(0deg)';
         vNavBar.style.width = '275px'
+        mainContent.style.paddingLeft = '275px'
         for (let i = 0; i < vNavLinks.length; i++) {
             vNavLinks[i].style.display = '';
         }

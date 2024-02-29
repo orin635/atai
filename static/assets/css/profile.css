@@ -1,0 +1,13 @@
+span {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+ul {
+    padding-left: 15px;
+}
+
+#profile-container {
+    padding-top: 15px;
+    padding-left: 15px;
+}

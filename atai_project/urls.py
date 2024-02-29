@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
-from atai_app.views import logout_user, register, dashboard, trade_settings, live_charts, error_redirect, coinbase_login, coinbase_callback
+from atai_app.views import logout_user, register, dashboard, trade_settings, live_charts, error_redirect, coinbase_login, coinbase_callback, profile
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -31,6 +31,7 @@ urlpatterns = [
     path("register/", register, name="register"),
     path("trade_settings", trade_settings, name="trade_settings"),
     path("live_charts", live_charts, name="live_charts"),
+    path("profile", profile, name="profile"),
     path('error_redirect', error_redirect, name='error_redirect'),
     path('coinbase/login/', coinbase_login, name='coinbase_login'),
     path('coinbase/callback/', coinbase_callback, name='coinbase_callback'),

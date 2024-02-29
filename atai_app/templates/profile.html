@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% load static %}
+    <div id = "profile-container">
+        <link rel="stylesheet" href="{% static 'assets/css/profile.css' %}">
+        <span>Settings</span>
+        <hr>
+        <ul>
+            <li>Theme </li>
+            <li>Live Chart Cryptos</li>
+            {% if profile.coinbase_connected %}
+                <li>Coinbase is Connected</li>
+            {% else %}
+                <li><a href="{% url 'coinbase_login' %}">Connect to Coinbase</a></li>
+            {% endif %}
+        </ul>
+
+        <br><br><br>
+        <span>Profile</span>
+        <hr>
+        <ul>
+            <li>First Name : {{ user.first_name }}</li>
+            <li>Last Name : {{ user.last_name }}</li>
+            <li>UserName : {{ user.username }}</li>
+            <li>Email : {{ user.email }}</li>
+            <li>Age : {{ profile.age }}</li>
+            <li>Profile Picture : <img src="{{ profile.profile_picture.url }}" alt="profile picture" class="rounded-circle h-nav-pfp"></li>
+        </ul>
+    </div>
+{% endblock %}
