@@ -88,9 +88,9 @@ function switchNav() {
 }
 
 function updateDarkMode(userId) {
+    console.log("UpdateDarkmode")
     const csrftoken = getCookie('csrftoken');
     const isChecked = $('#dark_mode').is(':checked');
-
     $.ajax({
         url: '/update-dark-mode/',
         type: 'POST',

@@ -199,6 +199,7 @@ def coinbase_callback(request):
 
 def update_dark_mode(request):
     user_id = request.POST.get('user_id')
+    print(user_id)
     dark_mode = request.POST.get('dark_mode') == 'true'  # Convert string to boolean
     profile = Profile.objects.get(user__id=user_id)
     profile.dark_mode = dark_mode

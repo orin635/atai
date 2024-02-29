@@ -6,8 +6,55 @@ span {
 ul {
     padding-left: 15px;
 }
+#bottom-container {
+    display: flex; /* Use flexbox layout */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-end; /* Align children to the end (bottom) */
+}
 
-#profile-container {
-    padding-top: 15px;
-    padding-left: 15px;
+#sign-out-button {
+    padding: 10px 20px; /* Button padding */
+    background-color: #f44336; /* Red background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Text size */
+    cursor: pointer; /* Cursor changes to hand icon */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+    outline: none; /* Remove outline */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    text-decoration: none;
+    text-align: center;
+    margin-top: auto;
+    position:absolute;
+    bottom:80px;
+    width: 95vw;
+}
+
+/* Hover and active states for the Sign Out button */
+#sign-out-button:hover, #sign-out-button:active {
+    background-color: #d32f2f; /* Darker shade of red for the background */
+    transform: scale(1.05); /* Slightly increase the button size */
+}
+
+#profile-container{
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 130px);
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+@media screen and (min-width: 868px) {
+    #sign-out-button {
+        width: 120px;
+    }
+}
+
+@media screen and (max-height: 680px) {
+    #sign-out-button {
+        position: relative;
+    }
 }

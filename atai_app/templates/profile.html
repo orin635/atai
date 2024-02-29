@@ -4,10 +4,11 @@
     {% load static %}
     <div id = "profile-container">
         <link rel="stylesheet" href="{% static 'assets/css/profile.css' %}">
+        <script src="{% static 'assets/js/profile.js' %}"></script>
         <span>Settings</span>
         <hr>
         <ul>
-            <li>Dark Mode <label for="dark_mode"></label><input type="checkbox" id="dark_mode" name="dark_mode" class="btn-check" {% if profile.dark_mode %}checked{% endif %} onchange="updateDarkMode({{ profile.user.id }});"></li>
+            <li>Dark Mode <label for="dark_mode"></label><input type="checkbox" id="dark_mode_mobile" name="dark_mode" class="btn-check" {% if profile.dark_mode %}checked{% endif %} onchange="updateDarkModeMobile({{ profile.user.id }});"></li>
             <li>Live Chart Cryptos</li>
             {% if profile.coinbase_connected %}
                 <li>Coinbase is Connected</li>
@@ -33,6 +34,6 @@
         </ul>
         <br><br><br>
         <hr>
-        <span><a class="h-nav-link" href="{% url 'logout_user' %}">Sign out</a></span>
+        <span><a class="h-nav-link" id = "sign-out-button" href="{% url 'logout_user' %}">Sign out</a></span>
     </div>
 {% endblock %}
