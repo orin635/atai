@@ -250,7 +250,7 @@ ul {
  }
 
 .popup li {
-    display: flex;
+    display: flex; /* Enables flexbox */
     align-items: center;
 }
 
@@ -258,12 +258,11 @@ ul {
     display: none;
 }
 
-#dark_mode{
+#dark_mode {
     margin-left: 20px;
     width: 15px;
     height: 15px;
 }
-
 
 
 @media screen and (max-width: 868px) {

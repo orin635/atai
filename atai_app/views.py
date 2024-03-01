@@ -10,6 +10,8 @@ import datetime
 import requests
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+import json
+from django.core.serializers import serialize
 
 
 def logout_user(request):
@@ -30,22 +32,66 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
+def map_currency_codes_to_ids(codes):
+    print(codes)
+    # Define a unique key for the cache
+    cache_key = 'coin_gecko_coin_list'
+
+    # Try to get the cached data
+    code_to_id = cache.get(cache_key)
+
+    # If the data is not in the cache, fetch it from CoinGecko
+    if not code_to_id:
+        url = 'https://api.coingecko.com/api/v3/coins/list'
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+
+            # Create a mapping of symbols to CoinGecko IDs
+            code_to_id = {coin['symbol'].upper(): coin['id'] for coin in data}
+
+            # Cache this data for a longer period, for example, 24 hours (86400 seconds)
+            cache.set(cache_key, code_to_id, timeout=86400)
+
+        except requests.RequestException as e:
+            print(f"An error occurred while mapping codes to IDs: {e}")
+            return {}
+
+    # Return a mapping for your specific codes
+    return {code: code_to_id.get(code.upper(), '') for code in codes}
+
+
+def fetch_current_prices(coin_codes):
+    # Map codes to CoinGecko IDs
+    code_to_id_map = map_currency_codes_to_ids(coin_codes)
+    coin_ids = ','.join(code_to_id_map.values())
+    # Construct the request URL
+    url = f'https://api.coingecko.com/api/v3/simple/price?ids={coin_ids}&vs_currencies=eur'
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        print(f"An error occurred while fetching prices: {e}")
+        return {}
+
+
+
 def dashboard(request):
-    if not request.user.is_authenticated:#If user is not logged in, redirect to login
+    if not request.user.is_authenticated:  # If user is not logged in, redirect to login
         return redirect('/accounts/login')
     else:
         cache_key_account = f'{request.user.id}_coinbase_account'
-        cache_key_balance = f'{request.user.id}_eth_balance'
+        accounts = cache.get(cache_key_account)  # This is already a Python list, not a JSON string
 
-        # Attempt to get cached data
-        account_name = cache.get(cache_key_account)
-        eth_balance = cache.get(cache_key_balance)
-
-        if account_name is not None and eth_balance is not None:
+        if accounts is not None:
+            print("loaded from cache")
             return render(request, 'dashboard.html', {
-                'account_name': account_name,
-                'eth_balance': eth_balance
+                'accounts': accounts  # Directly pass the Python list to context
             })
+
         else:
             try:
                 # Retrieve the CoinbaseAccount for the current user
@@ -87,31 +133,40 @@ def dashboard(request):
 
             if access_token:
                 # Fetch user profile information as before
-                user_info_url = "https://api.coinbase.com/v2/user"  # Change this line if you have a specific URL in settings
+                user_info_url = "https://api.coinbase.com/v2/accounts/?limit=100"
                 response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}',
-                                                                'CB-VERSION': 'YYYY-MM-DD'})  # Set the API version date
+                                                                'CB-VERSION': 'YYYY-MM-DD'})
+
                 if response.status_code == 200:
-                    user_data = response.json()
-                    account_name = user_data['data']['name']
+                    accounts_data = response.json()['data']
 
-                    # Fetch account balance information
-                    accounts_url = "https://api.coinbase.com/v2/accounts/ETH"  # Use the correct endpoint for account information
-                    response = requests.get(accounts_url, headers={'Authorization': f'Bearer {access_token}',
-                                                                   'CB-VERSION': 'YYYY-MM-DD'})  # Ensure to add the API version header
-                    if response.status_code == 200:
-                        accounts_data = response.json()
+                    # Extract unique coin symbols from account data
+                    coin_codes = {account['currency']['code'] for account in accounts_data if
+                                  float(account['balance']['amount']) > 0.00001}
 
-                        if accounts_data['data']:  # Check if there are accounts
-                            eth_balance = accounts_data['data']['balance']['amount']
-                        else:
-                            eth_balance = 'Unavailable'
+                    # Map currency codes to CoinGecko IDs
+                    code_to_id_map = map_currency_codes_to_ids(coin_codes)
 
-                        cache.set(cache_key_account, account_name, 1800)
-                        cache.set(cache_key_balance, eth_balance, 1800)
-                        return render(request, 'dashboard.html', {
-                            'account_name': account_name,
-                            'eth_balance': eth_balance  # Adjust according to how you handle the balance data
-                        })
+                    # Fetch current prices for these coins in euros using the CoinGecko IDs
+                    current_prices = fetch_current_prices(
+                        code_to_id_map)  # Assuming fetch_current_prices now expects a map or just codes
+
+                    # Prepare accounts list with additional information
+                    accounts_list = [{
+                        'name': account['name'],
+                        'balance_amount': float(account['balance']['amount']),
+                        'balance_currency': account['balance']['currency'],
+                        'currency_code': account['currency']['code'],
+                        'currency_name': account['currency']['name'],
+                        'current_price': current_prices.get(code_to_id_map.get(account['currency']['code'], ''),
+                                                            {}).get('eur', 0),
+                        'balance_value': float(account['balance']['amount']) * current_prices.get(
+                            code_to_id_map.get(account['currency']['code'], ''), {}).get('eur', 0)
+                    } for account in accounts_data if float(account['balance']['amount']) > 0.00001]
+
+                    # Cache and render
+                    cache.set(cache_key_account, accounts_list, timeout=1800)
+                    return render(request, 'dashboard.html', {'accounts': accounts_list})
 
             return redirect('/error_redirect')
 
@@ -205,4 +260,3 @@ def update_dark_mode(request):
     profile.dark_mode = dark_mode
     profile.save()
     return JsonResponse({'success': True})
-

@@ -1,13 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/dashboard.css' %}">
+    <script type="text/javascript">
+        let accountsData = {{ accounts|safe }};
+    </script>
+    <script src="{% static 'assets/js/dashboard.js' %}"></script>
+
     {% if profile.coinbase_connected %}
-        <p><strong>Account Name:</strong> {{ account_name }}</p>
-        <p><strong>Eth Balance</strong> {{ eth_balance }}</p>
+        {% if accounts %}
+            <ul>
+                {% for account in accounts %}
+                    <li>
+                        Name: {{ account.name }},
+                        Balance: {{ account.balance_amount }} {{ account.balance_currency }},
+                        Currency Code: {{ account.currency_code }},
+                        Currency Name: {{ account.currency_name }}
+                        Value: {{ account.balance_value }}
+                        Coin Price: {{ account.current_price }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No accounts available.</p>
+        {% endif %}
     {% else %}
         Please go to your Profile and connect your coinbase account
     {% endif %}
-    <p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br>
-    <p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br>
-    <p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br><p>Content</p><br>
 {% endblock %}
