@@ -9,16 +9,34 @@
     <script src="{% static 'assets/js/dashboard.js' %}"></script>
 
     {% if profile.coinbase_connected %}
+        <div id = "total-wallet-value-container">Portfolio value <span id="total_wallet_value"></span></div>
         {% if accounts %}
-            <ul>
+            <ul id = "crypto-list">
+                <li id = "top-crypto-list"><span>Asset</span><span>Balance</span><span class = "hide-on-mobile">Price</span></li>
+                <li><hr></li>
                 {% for account in accounts %}
-                    <li>
-                        Name: {{ account.name }},
-                        Balance: {{ account.balance_amount }} {{ account.balance_currency }},
-                        Currency Code: {{ account.currency_code }},
-                        Currency Name: {{ account.currency_name }}
-                        Value: {{ account.balance_value }}
-                        Coin Price: {{ account.current_price }}
+                    <li class="crypto-list-item">
+                        {# ASSETS #}
+                        <div class="crypto-list-item-1">
+                            <img class="crypto-logo" style = "background-color: {{ account.currency_color }};"src="{% static 'crypto_logos/'|add:account.balance_currency|add:'.jpg' %}"
+                                onerror="this.onerror=null;this.src='{% static 'assets/images/placeholder_pfp.png' %}';"
+                                alt="{{ account.currency_name }} logo">
+                            <div class="crypto-list-item-stacked asset-stack">
+                                <span class="currency-name">{{ account.currency_name }}</span>
+                                <span class="opacity-80">{{ account.balance_currency }}</span>
+                            </div>
+                        </div>
+                        {# BALANCE #}
+                        <div class="crypto-list-item-2">
+                             <div class="crypto-list-item-stacked">
+                                 <span class="balance-value">€{{ account.balance_value |floatformat:2}}</span>
+                                 <span class="opacity-80 balance-amount">{{ account.balance_amount|floatformat:5 }} {{ account.balance_currency }}</span>
+                             </div>
+                        </div>
+                        {# PRICE #}
+                        <div class="crypto-list-item-3">
+                            <span class = "hide-on-mobile currency-price">€{{ account.current_price |floatformat:2}}</span>
+                        </div>
                     </li>
                 {% endfor %}
             </ul>

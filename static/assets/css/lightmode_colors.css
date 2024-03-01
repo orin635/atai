@@ -6,7 +6,7 @@
     color: #FFFFFF;
 }
 
-#h-nav {
+#h-nav, #crypto-list {
     background-color: #F9F9F9;
 }
 
@@ -18,7 +18,7 @@
     background-color: #eeeeee;
 }
 
-#main-content-container {
+#main-content-container, html {
     background-color: #EBEEEE;
 }
 
@@ -33,6 +33,10 @@
 .close-btn {
     background-color: #4e73df;
     color: #FFFFFF;
+}
+
+.crypto-list-item:hover {
+    background-color: #F6F6F6;
 }
 
 @media screen and (max-width: 868px) {

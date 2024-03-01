@@ -1,0 +1,145 @@
+#total-wallet-value-container {
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.9;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-left: 10%;
+}
+
+#total-wallet-value-container span {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.crypto-logo {
+    height: 36px;
+    width: 36px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+}
+
+#top-crypto-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#top-crypto-list span {
+    font-weight: 700;
+    opacity: 0.8;
+    font-size: 18px;
+}
+
+#crypto-list {
+    width: 80%;
+    margin-left: 10%;
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 1800px;
+}
+
+.crypto-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.crypto-list-item div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 33%;
+}
+
+
+.crypto-list-item-stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.asset-stack {
+    padding-left: 15px;
+}
+
+.currency-name, .balance-value, .currency-price {
+    font-weight: 500;
+}
+
+.balance-amount {
+    font-size: 15px;
+}
+
+.crypto-list-item-stacked span{
+    width: 100%;
+    white-space: nowrap;
+}
+
+.crypto-list-item-1 {
+    padding-right: 27%;
+}
+
+.crypto-list-item-2 {
+    padding-left: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.crypto-list-item-3 {
+    padding-left: 28%;
+}
+
+.opacity-80 {
+    opacity: 0.8;
+}
+
+
+@media screen and (max-width: 868px) {
+    #span-price {
+        display: none;
+    }
+
+    .hide-on-mobile{
+        display: none;
+    }
+    .crypto-list-item-2 {
+        padding-left: 50%;
+    }
+    @media screen and (max-width: 550px) {
+        .crypto-list-item-2 {
+            padding-left: 40%;
+        }
+    }
+
+    #crypto-list {
+        width: 94%;
+        margin-left: 3%;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    #total-wallet-value-container {
+        margin-left: 3%;
+    }
+}
+
+
+@media screen and (min-width: 2500px) {
+    #crypto-list, #total-wallet-value-container {
+        margin-left: 250px;
+    }
+}

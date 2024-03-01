@@ -32,51 +32,27 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-def map_currency_codes_to_ids(codes):
-    print(codes)
-    # Define a unique key for the cache
-    cache_key = 'coin_gecko_coin_list'
+def get_coinbase_prices(currencies, base_currency='EUR'):
+    print(currencies)
+    prices = {}
+    for currency in currencies:
+        # Coinbase API endpoint for current exchange rates for a currency
+        api_url = f'https://api.coinbase.com/v2/exchange-rates?currency={currency}'
 
-    # Try to get the cached data
-    code_to_id = cache.get(cache_key)
-
-    # If the data is not in the cache, fetch it from CoinGecko
-    if not code_to_id:
-        url = 'https://api.coingecko.com/api/v3/coins/list'
         try:
-            response = requests.get(url)
-            response.raise_for_status()
+            response = requests.get(api_url)
+            response.raise_for_status()  # Check for HTTP errors
             data = response.json()
 
-            # Create a mapping of symbols to CoinGecko IDs
-            code_to_id = {coin['symbol'].upper(): coin['id'] for coin in data}
-
-            # Cache this data for a longer period, for example, 24 hours (86400 seconds)
-            cache.set(cache_key, code_to_id, timeout=86400)
-
+            # Get the exchange rate from the specified currency to the base currency (e.g., 'EUR')
+            rate = data['data']['rates'][base_currency]
+            prices[currency] = rate
         except requests.RequestException as e:
-            print(f"An error occurred while mapping codes to IDs: {e}")
-            return {}
+            print(f"An error occurred while fetching prices for {currency}: {e}")
+        except KeyError:
+            print(f"Could not find rate for {currency} in response.")
 
-    # Return a mapping for your specific codes
-    return {code: code_to_id.get(code.upper(), '') for code in codes}
-
-
-def fetch_current_prices(coin_codes):
-    # Map codes to CoinGecko IDs
-    code_to_id_map = map_currency_codes_to_ids(coin_codes)
-    coin_ids = ','.join(code_to_id_map.values())
-    # Construct the request URL
-    url = f'https://api.coingecko.com/api/v3/simple/price?ids={coin_ids}&vs_currencies=eur'
-
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as e:
-        print(f"An error occurred while fetching prices: {e}")
-        return {}
-
+    return prices
 
 
 def dashboard(request):
@@ -140,32 +116,25 @@ def dashboard(request):
                 if response.status_code == 200:
                     accounts_data = response.json()['data']
 
-                    # Extract unique coin symbols from account data
                     coin_codes = {account['currency']['code'] for account in accounts_data if
                                   float(account['balance']['amount']) > 0.00001}
 
-                    # Map currency codes to CoinGecko IDs
-                    code_to_id_map = map_currency_codes_to_ids(coin_codes)
-
-                    # Fetch current prices for these coins in euros using the CoinGecko IDs
-                    current_prices = fetch_current_prices(
-                        code_to_id_map)  # Assuming fetch_current_prices now expects a map or just codes
-
-                    # Prepare accounts list with additional information
+                    current_prices = get_coinbase_prices(coin_codes)
                     accounts_list = [{
                         'name': account['name'],
                         'balance_amount': float(account['balance']['amount']),
                         'balance_currency': account['balance']['currency'],
                         'currency_code': account['currency']['code'],
                         'currency_name': account['currency']['name'],
-                        'current_price': current_prices.get(code_to_id_map.get(account['currency']['code'], ''),
-                                                            {}).get('eur', 0),
-                        'balance_value': float(account['balance']['amount']) * current_prices.get(
-                            code_to_id_map.get(account['currency']['code'], ''), {}).get('eur', 0)
-                    } for account in accounts_data if float(account['balance']['amount']) > 0.00001]
+                        'currency_color': account['currency']['color'],
+                        'current_price': float(current_prices.get(account['currency']['code'])),
+                        'balance_value': float(account['balance']['amount']) * float(current_prices.get(account['currency']['code'])),
+                    } for account in accounts_data if float(account['balance']['amount']) > 0.00001 and (float(account['balance']['amount']) * float(current_prices.get(account['currency']['code'])) > 1)]
+
+                    accounts_list = sorted(accounts_list, key=lambda x: x['balance_value'], reverse=True)
 
                     # Cache and render
-                    cache.set(cache_key_account, accounts_list, timeout=1800)
+                    cache.set(cache_key_account, accounts_list, timeout=900)
                     return render(request, 'dashboard.html', {'accounts': accounts_list})
 
             return redirect('/error_redirect')

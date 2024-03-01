@@ -159,8 +159,8 @@ ul {
 
 #pfp-dropdown {
     display: none;
-    border-radius: 10px; /* Adjust the value to change the roundness */
-    border: 1px solid #ccc; /* Optional: Add a border */
+    border-radius: 10px;
+    border: 1px solid #ccc;
     padding: 20px 40px 20px 20px;
     box-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
 
