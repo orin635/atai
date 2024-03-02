@@ -130,11 +130,12 @@ ul {
     display: flex; /* Use flexbox layout */
     align-items: center;
     justify-content: center;
-    padding-left: 35px;
     margin: 0 auto;
+    padding-left: 550px;
     font-weight: 500;
     font-style: normal;
     font-size: 35px;
+    transition: padding-left 0.5s ease;
 }
 
 #nav-logo img {

@@ -63,6 +63,7 @@ function switchNav() {
     const vNavBurger = document.getElementById('v-nav-burger');
     const vNavLinks = document.getElementsByClassName('v-nav-link-span')
     const vNavBar = document.getElementById('v-nav')
+    const hNav = document.getElementById('nav-logo')
     const mainContent = document.getElementById('main-content-container')
 
     console.log(vNavLinks)
@@ -74,6 +75,7 @@ function switchNav() {
         vNavBurger.style.transform = 'rotate(90deg)';
         vNavBar.style.width = '80px'
         mainContent.style.paddingLeft = '80px'
+        hNav.style.paddingLeft = '240px'
         for (let i = 0; i < vNavLinks.length; i++) {
             vNavLinks[i].style.display = 'none';
         }
@@ -81,6 +83,7 @@ function switchNav() {
         vNavBurger.style.transform = 'rotate(0deg)';
         vNavBar.style.width = '275px'
         mainContent.style.paddingLeft = '275px'
+         hNav.style.paddingLeft = '550px'
         for (let i = 0; i < vNavLinks.length; i++) {
             vNavLinks[i].style.display = '';
         }

@@ -116,7 +116,7 @@
     padding: 20px;
     margin: auto;
     max-width: 500px;
-    min-width: 400px;
+    min-width: 350px;
     position: fixed;
     top: 30%;
     left: 50%;
@@ -139,6 +139,31 @@
     transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
 }
 
+#chart-container {
+    padding-top: 50px;
+    width: 80%;
+    margin-left: 10%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+    grid-gap: 5px;
+    max-width: 1800px;
+    justify-items: center;
+    align-items: center;
+}
+
+
+.blue-text {
+    display: none;
+}
+
+
+#news-stories {
+    padding-top: 25px;
+    width: 80% !important;
+    margin-left: 10%;
+    height: 600px !important;
+}
+
 
 @media screen and (max-width: 868px) {
     #span-price {
@@ -155,6 +180,10 @@
         .crypto-list-item-2 {
             padding-left: 40%;
         }
+
+        #chart-container {
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        }
     }
 
     #crypto-list {
@@ -167,11 +196,28 @@
     #total-wallet-value-container {
         margin-left: 3%;
     }
+
+    #chart-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 0;
+    }
+
+    .live-mini-chart{
+        width: 90% !important;
+        padding-bottom: 5px;
+    }
+
+    #top-banner {
+        width: 100%;
+    }
 }
 
 
-@media screen and (min-width: 2500px) {
-    #crypto-list, #total-wallet-value-container {
-        margin-left: 250px;
+@media screen and (min-width: 2700px) {
+    #crypto-list, #total-wallet-value-container, #chart-container {
+        margin-left: calc(50vw - 1000px);
     }
 }

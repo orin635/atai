@@ -1,0 +1,13 @@
+#live-advanced-charts {
+    height: calc(100vh - 80px) !important;
+}
+
+.blue-text {
+    display: none;
+}
+
+@media screen and (max-width: 868px) {
+    #live-advanced-charts {
+        height: calc(100vh - 100px) !important;
+    }
+}
