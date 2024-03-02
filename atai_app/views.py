@@ -33,7 +33,6 @@ def register(request):
 
 
 def get_coinbase_prices(currencies, base_currency='EUR'):
-    print(currencies)
     prices = {}
     for currency in currencies:
         # Coinbase API endpoint for current exchange rates for a currency

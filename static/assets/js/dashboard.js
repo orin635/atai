@@ -15,4 +15,16 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Total Value', total_wallet_value)
         document.getElementById('total_wallet_value').innerHTML = "€" + total_wallet_value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
+
+    const settingsLink = document.getElementById('settingsLink');
+    if (settingsLink) {
+        settingsLink.addEventListener('click', function() {
+            if (window.innerWidth < 868) {
+                window.location.href = '/profile';
+            } else {
+                revealProfile();
+            }
+        });
+    }
 });
+

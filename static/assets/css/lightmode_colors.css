@@ -39,6 +39,27 @@
     background-color: #F6F6F6;
 }
 
+
+#connect-coinbase-error {
+    border: 1.5px solid #f44336;
+    background-color: #fefefe;
+    color: #333;
+}
+
+.error-message {
+    color: #d32f2f;
+}
+
+.settings-link {
+    color: #1976d2;
+    background-color: #e3f2fd;
+}
+
+.settings-link:hover {
+    background-color: #1976d2;
+    color: #fff;
+}
+
 @media screen and (max-width: 868px) {
         #mobile-nav {
         background-color: #4e73df;

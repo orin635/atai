@@ -35,12 +35,34 @@ html {
 }
 
 .close-btn {
-    background-color: #4e73df;
+    background-color: #1c3b94;
     color: #FFFFFF;
 }
 
 .crypto-list-item:hover {
     background-color: #1E2022;
+}
+
+
+#connect-coinbase-error {
+    border: 1.5px solid #f44336;
+    background-color: #2A2C36;
+    color: #E0E0E0;
+
+}
+
+.error-message {
+    color: #FF6B6B;
+}
+
+.settings-link {
+    color: #4D9FFF;
+    background-color: #1A1C23;
+}
+
+.settings-link:hover {
+    background-color: #357ABD;
+    color: #FFFFFF;
 }
 
 @media screen and (max-width: 868px) {

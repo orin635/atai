@@ -18,7 +18,7 @@
                     <li class="crypto-list-item">
                         {# ASSETS #}
                         <div class="crypto-list-item-1">
-                            <img class="crypto-logo" style = "background-color: {{ account.currency_color }};"src="{% static 'crypto_logos/'|add:account.balance_currency|add:'.jpg' %}"
+                            <img class="crypto-logo" style = "background-color: {{ account.currency_color }};"src="{% static 'crypto_logos/'|add:account.balance_currency|lower|add:'.jpg' %}"
                                 onerror="this.onerror=null;this.src='{% static 'assets/images/placeholder_pfp.png' %}';"
                                 alt="{{ account.currency_name }} logo">
                             <div class="crypto-list-item-stacked asset-stack">
@@ -44,6 +44,12 @@
             <p>No accounts available.</p>
         {% endif %}
     {% else %}
-        Please go to your Profile and connect your coinbase account
+        <div id="connect-coinbase-error">
+            <span class="error-message">You need to connect to Coinbase before using the Dashboard.</span>
+            <!-- Removed direct 'onclick' and added an ID for JavaScript targeting -->
+            <a href="javascript:void(0)" id="settingsLink" class="settings-link">Go to profile to connect your account.</a>
+        </div>
+
+
     {% endif %}
 {% endblock %}
