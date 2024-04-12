@@ -8,47 +8,49 @@ ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE=atai_project.settings
 ENV DOCKER_ENV=True
 
-# Ensure that everything is up-to-date
-#RUN apt-get -y update && apt-get -y upgrade
+# Install necessary packages including cron
 RUN apt-get update && \
-    apt-get install -y sudo nano && \
+    apt-get install -y cron sudo nano && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN conda update -n base conda && conda update -n base --all
 
+# Update Conda
+RUN conda update -n base conda && conda update -n base --all
 
 # Make a working directory in the image and set it as working dir.
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-# Get the following libraries. We can install them "globally" on the image as it will contain only our project
-#RUN apt-get -y install build-essential python-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
 
-# You should have already exported your conda environment to an "ENV.yml" file.
-# Now copy this to the image and install everything in it. Make sure to install uwsgi - it may not be in the source environment.
+# Copy the environment.yml file and create the Conda environment
 COPY ENV.yml /usr/src/app
 RUN conda env create -n atai_project --file ENV.yml
-# Make RUN commands use the new environment
-# See https://pythonspeed.com/articles/activate-conda-dockerfile/ for explanation
+
+# Activate the Conda environment
 RUN echo "conda activate atai_project" >> ~/.bashrc
 SHELL ["/bin/bash", "--login", "-c"]
 
-# Set up conda to match our test environment
-RUN conda config --add channels conda-forge && conda config --set channel_priority strict
-RUN cat ~/.condarc
+# Install uwsgi
 RUN conda install uwsgi
 
 # Create the static directory
 RUN mkdir -p /usr/src/app/static
-# Copy everything in your Django project to the image.
-COPY . /usr/src/app
-# Make sure that static files are up to date and available
-RUN python manage.py collectstatic --no-input
-#RUN python manage.py makemigrations
-#RUN python manage.py migrate
 
-# Expose port 8001 on the image. We'll map a localhost port to this later.
+# Copy the project files to the container
+COPY . /usr/src/app
+
+# Collect static files
+RUN python manage.py collectstatic --no-input
+
+# Expose the port uwsgi will listen on
 EXPOSE 8001
 
-# Run "uwsgi". uWSGI is a Web Server Gateway Interface (WSGI) server implementation that is typically used to run Python
-# web applications.
-CMD uwsgi --ini uwsgi.ini
+# Add your cron file to the cron directory
+COPY django_cronjobs /etc/cron.d/django_cronjobs
+
+# Give execution rights on the cron job and apply it
+RUN chmod 0644 /etc/cron.d/django_cronjobs && \
+    crontab /etc/cron.d/django_cronjobs && \
+    touch /var/log/cron.log
+
+# Run cron and uwsgi when the container starts
+CMD cron && uwsgi --ini uwsgi.ini

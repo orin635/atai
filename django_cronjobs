@@ -1,0 +1,2 @@
+*/5 * * * * root cd /usr/src/app && /opt/conda/envs/atai_project/bin/python manage.py monitor_sell >> /var/log/cron.log 2>&1
+*/30 * * * * root cd /usr/src/app && /opt/conda/envs/atai_project/bin/python manage.py execute_trades >> /var/log/cron.log 2>&1

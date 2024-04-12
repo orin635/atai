@@ -1,0 +1,114 @@
+    .container {
+        width: 95%;
+        max-width: 1200px;
+        margin: 20px auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .form-section, .trades-section {
+        flex: 1;
+        min-width: 280px; /* Ensure the content is responsive */
+        padding: 20px;
+        border-radius: 15px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form {
+        padding-top: 20px;
+    }
+    .form-group label,
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        display: block;
+        box-sizing: border-box; /* Include padding in width calculation */
+    }
+    .btn-primary {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .list-group-item {
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+    .list-group-item:first-child, .list-group-item:last-child {
+        border-radius: 5px;
+    }
+    .list-group-item h5 {
+        margin: 0 0 10px;
+    }
+    .list-group-item p,
+    .list-group-item small {
+        margin: 0;
+    }
+    .list-group-item.active h5{
+        margin: auto;
+        text-align: center;
+    }
+
+    .form-checkbox-group {
+        display: flex;
+        align-items: center; /* Ensure label and checkbox are aligned */
+        margin-bottom: 20px; /* Spacing between form elements */
+    }
+
+    .form-checkbox-group label {
+        /* Space between checkbox and label */
+        display: block;
+        text-align: center;
+        margin: auto 15px auto 10px;
+    }
+
+    .form-checkbox-group input[type="checkbox"] {
+        /* Enlarge checkboxes */
+        width: 20px; /* Width of the checkbox */
+        height: 20px; /* Height of the checkbox */
+        cursor: pointer;
+        align-content: center;
+        text-align: center;
+    }
+
+    /* Optional: Custom styling for checkboxes */
+    .form-checkbox-group input[type="checkbox"]::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc; /* Border color */
+        border-radius: 4px; /* Rounded corners for the checkbox */
+        background-color: #f9f9f9; /* Background color */
+    }
+
+
+
+    @media (max-width: 868px) {
+        .container {
+            flex-direction: column;
+        }
+        .form-section, .trades-section {
+            min-width: auto;
+        }
+        .form-group label,
+        .form-group input,
+        .form-group select,
+        .btn-primary {
+            padding: 15px;
+            font-size: 16px; /* Larger font size for better readability on small screens */
+        }
+        .list-group-item h5,
+        .list-group-item p,
+        .list-group-item small {
+            font-size: 14px; /* Adjust font size for content within list items */
+        }
+    }

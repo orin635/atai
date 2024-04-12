@@ -34,9 +34,9 @@ crossorigin="anonymous"></script>
             <div id = "v-nav-burger-container"><i class="fa-solid fa-bars" id = "v-nav-burger" onclick="switchNav()"></i></div>
             <ul>
                 <li><br><br></li>
-                <li class="v-nav-link"><a href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high"></i><span class="v-nav-link-span">Dashboard</span></a></li>
-                <li class="v-nav-link"><a href="{% url 'trade_settings' %}"><i class="fa-solid fa-sliders"></i><span class="v-nav-link-span">Trade Settings</span></a></li>
-                <li class="v-nav-link"><a href="{% url 'live_charts' %}"><i class="fa-solid fa-chart-simple"></i><span class="v-nav-link-span">Live Charts</span></a></li>
+                <li class="v-nav-link" id="dashboard-button"><a href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high"></i><span class="v-nav-link-span">Dashboard</span></a></li>
+                <li class="v-nav-link" id="dashboard-button"><a href="{% url 'trade_settings' %}"><i class="fa-solid fa-sliders"></i><span class="v-nav-link-span">Trade Settings</span></a></li>
+                <li class="v-nav-link" id="dashboard-button"><a href="{% url 'live_charts' %}"><i class="fa-solid fa-chart-simple"></i><span class="v-nav-link-span">Live Charts</span></a></li>
             </ul>
         </nav>
 

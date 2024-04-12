@@ -1,5 +1,68 @@
 {% extends "base.html" %}
 
 {% block content %}
-    Trade settings
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/tradesettings.css' %}">
+    <br><br>
+    <div class="container">
+    <div class="form-section">
+        <h2>Trade Settings</h2>
+    <hr>
+        <form method="post" class="form">
+            {% csrf_token %}
+            <div class="form-checkbox-group">
+                <label for="{{ form.trade_btc.id_for_label }}">Trade Bitcoin : </label>
+                <input type="checkbox" id="{{ form.trade_btc.id_for_label }}" name="{{ form.trade_btc.html_name }}" {% if form.trade_btc.value %}checked{% endif %}>
+            </div>
+
+            <div class="form-checkbox-group">
+                <label for="{{ form.trade_eth.id_for_label }}">Trade Ethereum : </label>
+                <input type="checkbox" id="{{ form.trade_eth.id_for_label }}" name="{{ form.trade_eth.html_name }}" {% if form.trade_eth.value %}checked{% endif %}>
+            </div>
+            <div class="form-group">
+                {{ form.risk_tolerance.label_tag }} {{ form.risk_tolerance }}
+            </div>
+            <div class="form-group">
+                {{ form.trade_quantity.label_tag }} {{ form.trade_quantity }}
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+    </div>
+    <div class="trades-section">
+        {% if total_profit_loss >= 0 %}
+            <h2>Total Profit: <span>{{ total_profit_loss }}</span></h2>
+        {% else %}
+            <h2>Total Loss: <span>-€{{ total_profit_loss|stringformat:"s"|cut:"-" }}</span></h2>
+        {% endif %}
+        <hr>
+        <br>
+        <h3>Trade History:</h3>
+        <hr>
+        <div>
+            {% for trade in trades %}
+                {% if trade.is_active %}
+                    <div class="list-group-item active">
+                        <h5>Current Position: {{ trade.coin_type }} €{{ trade.buy_price }}</h5>
+                    </div>
+                {% else %}
+                    <div class="list-group-item">
+                        <h5>{{ trade.coin_type }}</h5>
+                        <p>Buy Price: €{{ trade.buy_price }} - Sell Price: €{{ trade.sell_price|default:"N/A" }}</p>
+                        {% if trade.profit_loss %}
+                            {% if trade.profit_loss >= 0 %}
+                                <small>Profit: €{{ trade.profit_loss }}</small>
+                            {% else %}
+                                <small>Loss: -€{{ trade.profit_loss|stringformat:"s"|cut:"-" }}</small>
+                            {% endif %}
+                        {% else %}
+                            <small>Profit/Loss: N/A</small>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% empty %}
+                    <p>No trades to display.</p>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
 {% endblock %}

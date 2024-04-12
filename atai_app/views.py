@@ -2,8 +2,10 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import logout
-from .forms import EmailForm
-from .models import EmailList, CoinbaseAccount, Profile
+from .forms import EmailForm, ProfileForm
+from .models import EmailList, CoinbaseAccount, Profile, Trade
+from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from django.utils import timezone
 from django.core.cache import cache
 import datetime
@@ -55,16 +57,16 @@ def get_coinbase_prices(currencies, base_currency='EUR'):
 
 
 def dashboard(request):
-    if not request.user.is_authenticated:  # If user is not logged in, redirect to login
+    if not request.user.is_authenticated:  # If user is not logged in, redirect to login page
         return redirect('/accounts/login')
     else:
         cache_key_account = f'{request.user.id}_coinbase_account'
-        accounts = cache.get(cache_key_account)  # This is already a Python list, not a JSON string
+        accounts = cache.get(cache_key_account)
 
         if accounts is not None:
             print("loaded from cache")
             return render(request, 'dashboard.html', {
-                'accounts': accounts  # Directly pass the Python list to context
+                'accounts': accounts
             })
 
         else:
@@ -78,7 +80,7 @@ def dashboard(request):
                 })
 
             if timezone.now() >= coinbase_account.expires_in:
-                # Token has expired, use the refresh token to get a new access token
+                # if token has expired use the refresh token to get a new access token
                 refresh_url = 'https://api.coinbase.com/oauth/token'
                 refresh_data = {
                     'grant_type': 'refresh_token',
@@ -94,20 +96,17 @@ def dashboard(request):
                     CoinbaseAccount.objects.filter(user=request.user).update(
                         access_token=token_info['access_token'],
                         refresh_token=token_info['refresh_token'],
-                        # Refresh token might not change, but it's good practice to update it anyway
                         expires_in=expires_in
                     )
-                    # Update the access token for the current request
                     access_token = token_info['access_token']
                 else:
-                    # Handle the error (e.g., invalid refresh token)
                     return redirect('/error/')
 
             else:
                 access_token = coinbase_account.access_token
 
             if access_token:
-                # Fetch user profile information as before
+                # get user profile information
                 user_info_url = "https://api.coinbase.com/v2/accounts/?limit=100"
                 response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}',
                                                                 'CB-VERSION': 'YYYY-MM-DD'})
@@ -127,8 +126,11 @@ def dashboard(request):
                         'currency_name': account['currency']['name'],
                         'currency_color': account['currency']['color'],
                         'current_price': float(current_prices.get(account['currency']['code'])),
-                        'balance_value': float(account['balance']['amount']) * float(current_prices.get(account['currency']['code'])),
-                    } for account in accounts_data if float(account['balance']['amount']) > 0.00001 and (float(account['balance']['amount']) * float(current_prices.get(account['currency']['code'])) > 1)]
+                        'balance_value': float(account['balance']['amount']) * float(
+                            current_prices.get(account['currency']['code'])),
+                    } for account in accounts_data if float(account['balance']['amount']) > 0.00001 and (
+                                float(account['balance']['amount']) * float(
+                            current_prices.get(account['currency']['code'])) > 1)]
 
                     accounts_list = sorted(accounts_list, key=lambda x: x['balance_value'], reverse=True)
 
@@ -139,8 +141,35 @@ def dashboard(request):
             return redirect('/error_redirect')
 
 
+@login_required
 def trade_settings(request):
-    return render(request, 'tradesettings.html')
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = None
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('/trade_settings')
+    else:
+        form = ProfileForm(instance=profile)
+
+    # Calculate total profit/loss from completed trades
+    total_profit_loss = Trade.objects.filter(profile=profile, is_active=False).aggregate(
+        total=Sum('profit_loss'))['total'] or 0
+
+    # List all trades
+    trades = Trade.objects.filter(profile=profile).order_by('-is_active')
+
+    context = {
+        'form': form,
+        'total_profit_loss': total_profit_loss,
+        'trades': trades,
+    }
+
+    return render(request, 'tradesettings.html', context)
 
 
 def live_charts(request):
@@ -156,22 +185,26 @@ def error_redirect(request):
 
 
 def coinbase_login(request):
-    # Build the Coinbase OAuth2 URL
+    # Coinbase OAuth2 URL
     parameters = {
         'response_type': 'code',
         'client_id': settings.COINBASE_CLIENT_ID,
         'redirect_uri': settings.COINBASE_REDIRECT_URI,
-        'scope': 'wallet:accounts:read',
+        'scope': 'wallet:accounts:read,wallet:orders:create,wallet:orders:read,wallet:buys:create,'
+                 'wallet:sells:create,wallet:notifications:read,wallet:buys:read,wallet:sells:read,'
+                 'wallet:transactions:read,wallet:user:read',
     }
-    url = f"https://www.coinbase.com/oauth/authorize?response_type={parameters['response_type']}&client_id={parameters['client_id']}&redirect_uri={parameters['redirect_uri']}&scope={parameters['scope']}"
+    url = (f"https://www.coinbase.com/oauth/authorize?response_type={parameters['response_type']}"
+           f"&client_id={parameters['client_id']}&redirect_uri={parameters['redirect_uri']}"
+           f"&scope={parameters['scope']}")
     return redirect(url)
 
 
 def coinbase_callback(request):
     error = request.GET.get('error')
     if error:
-        # Handle the error case
-        return redirect('/error')  # Replace '/error' with your actual error handling URL
+        # Handle an error
+        return redirect('/error')
 
     authorization_code = request.GET.get('code')
     if authorization_code:
@@ -189,7 +222,7 @@ def coinbase_callback(request):
         if response.status_code == 200:
             token_info = response.json()
             expires_in = timezone.now() + datetime.timedelta(seconds=token_info['expires_in'])
-            # Ensure the user is authenticated before linking Coinbase account
+            # Check if the user is authenticated before linking Coinbase account
             if request.user.is_authenticated:
                 CoinbaseAccount.objects.update_or_create(
                     user=request.user,
@@ -202,28 +235,28 @@ def coinbase_callback(request):
                     },
                 )
 
-                # Update user's Profile to set coinbase_connected to True
+                # Update users Profile to set coinbase_connected to True
                 Profile.objects.update_or_create(
                     user=request.user,
                     defaults={'coinbase_connected': True},
                 )
 
-                return redirect('/')  # Replace '/success' with your actual success URL
+                return redirect('/')
             else:
-                # Handle the case where the user is not authenticated
-                return redirect('/accounts/login/')  # Redirect to login page or appropriate URL
+                # If user is not authenticated
+                return redirect('/accounts/login/')
         else:
-            # Handle error in token exchange
-            return redirect('/error_redirect')  # Replace '/error' with your actual error handling URL
+            # If error in token exchange
+            return redirect('/error_redirect')
     else:
-        # No code was provided
+        # If code was provided
         return redirect('/error_redirect')
 
 
 def update_dark_mode(request):
     user_id = request.POST.get('user_id')
     print(user_id)
-    dark_mode = request.POST.get('dark_mode') == 'true'  # Convert string to boolean
+    dark_mode = request.POST.get('dark_mode') == 'true'
     profile = Profile.objects.get(user__id=user_id)
     profile.dark_mode = dark_mode
     profile.save()
